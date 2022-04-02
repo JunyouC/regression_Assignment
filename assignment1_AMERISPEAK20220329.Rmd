@@ -23,6 +23,7 @@ library(gtsummary)
 library(ggplot2)
 library(glue)
 library(tidyverse)
+library(knitr)
 options(width = 150)
 options(qwraps2_markup = "markdown")
 knitr::opts_chunk$set(echo = TRUE)
@@ -34,7 +35,7 @@ Read the csv file
 ```{R read Amerispeak file and convert, echo=TRUE, warning=FALSE}
 ## read file
 file_name<-"data_Amerispeakw5_SSAD579.csv"
-v_analysis_raw <- glue('~/Desktop/Regression R/regression_week1/assignment1/{file_name}')%>%
+v_analysis_raw <- glue('~/Desktop/Regression R/regression_Assignment/{file_name}')%>%
               read.csv()
 ## make a column to count people self-identified as republicans
 v_analysis <- v_analysis_raw %>%
@@ -48,7 +49,6 @@ str(head(v_analysis))
 ```
 
 ```{r}
-
 ## linear regression analysis
 Medicaid_full <- lm(num_Medicaid ~ dmale +
                     ddem + 
@@ -80,6 +80,7 @@ Medicaid_full <- lm(num_Medicaid ~ dmale +
                     data = v_analysis)
 
 tbl_regression(Medicaid_full,exponentiate=FALSE)
+
 
 ```
 
