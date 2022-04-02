@@ -1,0 +1,281 @@
+---
+title: "assignment1_SSAD1_template.Rmd"
+author: "Junyou"
+date: lubridate::today()
+output:
+  github_document: 
+   toc: 5
+---
+
+Template regression program--Yeah we don't need all these libraries.
+
+```{r setup, include=TRUE, echo=TRUE}
+#library(foreign)
+#library(systemfit)
+#library(stargazer)
+#library(pander)
+#library(sjPlot)
+#library(pollster)
+#library(lavaan)
+#library(qwraps2)
+#library(arsenal)
+library(gtsummary) 
+library(ggplot2)
+library(glue)
+library(tidyverse)
+options(width = 150)
+options(qwraps2_markup = "markdown")
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Read the csv file
+
+```{R read Amerispeak file and convert, echo=TRUE, warning=FALSE}
+## read file
+file_name<-"data_Amerispeakw5_SSAD579.csv"
+v_analysis_raw <- glue('~/Desktop/Regression R/regression_week1/assignment1/{file_name}')%>%
+              read.csv()
+## make a column to count people self-identified as republicans
+v_analysis <- v_analysis_raw %>%
+              mutate(drep = if_else(ddem == 0 & 
+                                          dlean_DEM == 0 &
+                                          dindependent_non_identified == 0 &
+                                          dlean_rep == 0, 1, 0)) %>%
+              mutate(drep = as.integer(drep))
+str(head(v_analysis))
+
+```
+
+```{r}
+
+## linear regression analysis
+Medicaid_full <- lm(num_Medicaid ~ dmale +
+                    ddem + 
+                    dlean_DEM +
+                    dindependent_non_identified +
+                    dlean_rep +
+                    dless_HS+
+                    dHS+
+                    dsome_col+
+                    dage30_44+
+                    dage45_59+
+                    dage60_plus+
+                    dNortheast+
+                    dMidwest+dWest+
+                    race_BLACK+
+                    race_HISPANIC+
+                    race_ASIAN+
+                    race_OTHERMIXED+
+                    incomedummy_25to49K+
+                    incomedummy_50to84K+
+                    incomedummy_85to150K+
+                    incomedummy_OVER150K+
+                    dPersonal_use_ever+
+                    dFamily_use_ever+
+                    dPersonal_conviction_ever+
+                    dFamily_conviction_ever+
+                    Stigma_Scale_Score+
+                    CoBRAS_Scale,
+                    data = v_analysis)
+
+tbl_regression(Medicaid_full,exponentiate=FALSE)
+
+```
+
+## Question_Democrats 1.1
+As we can see from the table, the self-identified democrats has a statistically significant positive strong relationship(beta = 0.62, P<0.001), while the republicans having a statistically significant positive moderate relationship(beta = -0.59, P<0.001) with attitudes of supporting expanded Medicaid benefits for addiction coverage.
+In other words, self-identified democrats are more likely to support expanded Medicaid benefits for addiction coverage while republicans not. 
+
+```{r question1.1}
+
+Medicaid_demo <- lm(num_Medicaid ~ ddem + drep, 
+                    data = v_analysis)
+tbl_regression(Medicaid_demo)
+
+```
+## Question_Democrats 1.2
+As we can see from the table, when controlled for gender, age, race, income and years of education, the self-identified democrats still have a statistically significant positive strong relationship(beta = 0.66, P<0.001), while republicans still have a statistically significant negative moderate relationship(beta = -0.56, p<0.001) with attitudes of supporting expanded Medicaid benefits for addiction coverage. In other words, self-identified democrats are still more likely to support expanded Medicaid benefits for addiction coverage, and the tendency of supporting has even increased a little bit from0.62 to 0.66 while republicans not. 
+```{r question 1.2}
+Medicaid_demo2 <- lm(num_Medicaid ~ ddem + 
+                      drep +
+                      dmale +
+                      dage30_44 +
+                      dage45_59 +
+                      dage60_plus +
+                      race_BLACK +
+                      race_HISPANIC +
+                      race_ASIAN +
+                      race_OTHERMIXED +
+                      incomedummy_25to49K +
+                      incomedummy_50to84K+
+                      incomedummy_85to150K + 
+                      incomedummy_OVER150K +
+                      dless_HS +
+                      dHS +
+                      dsome_col,
+                      data = v_analysis)
+tbl_regression(Medicaid_demo2)
+## omitted age category why omitted?
+## How to set dummy variables?
+
+```
+
+
+## Question_Democrats 1.3
+As we can see from the table, if we add opioid stigma and CoBRAS scores to the regression specification, the self-identified democrats still has a statistically significant positive moderate relationship(beta = 0.36, P<0.001) with attitudes of supporting expanded Medicaid benefits for addiction coverage,however, the strength is only as half as before. For the republicans, they have a significant negative weak relationship(beta = -0.27, p = 0.01) with attitudes of supporting expanded Medicaid benefits for addiction coverage.
+
+```{r question 1.3}
+Medicaid_demo3 <- lm(num_Medicaid ~ ddem + 
+                      drep +
+                      dmale +
+                      dage30_44 +
+                      dage45_59 +
+                      dage60_plus +
+                      race_BLACK +
+                      race_HISPANIC +
+                      race_ASIAN +
+                      race_OTHERMIXED +
+                      incomedummy_25to49K +
+                      incomedummy_50to84K+
+                      incomedummy_85to150K + 
+                      incomedummy_OVER150K +
+                      dless_HS +
+                      dHS +
+                      dsome_col +
+                      Stigma_Scale_Score +
+                      CoBRAS_Scale, 
+                      data = v_analysis)
+tbl_regression(Medicaid_demo3)
+```
+## Question_Democrats 1.3.1
+As we can see from the table, both the CoBRAS subscale(implicit racism)(beta = -0.34, p < 0.001) and stigmatizing attitudes and beliefs regarding opioid use disorder(beta = -0.36, p<0.001) have a moderate negative association with attitudes of supporting expanded Medicaid benefits for addiction coverage. In other words, people with more implicit racism and stigmatiazing attitudes are less likely to support expanded Medicaid benefits for addiction coverage. 
+
+
+## Question_naloxone 2.1
+As we can see from the table, the self-identified democrats has a statistically significant positive strong relationship(beta = 0.47, P<0.001), while republicans have a statistically significant negative moderate relationship(beta = -0.32, p<0.001) with attitudes of supporting naloxone distribution to prevent opioid overdose. In other words, self-identified democrats are more likely to support naloxone distribution to prevent opioid overdose while republicans not. 
+```{r question 2.1}
+nalo_demo1 <- lm(num_Naloxone ~ ddem +
+                    drep, 
+                    data = v_analysis)
+tbl_regression(nalo_demo1 )
+
+```
+
+## Question_naloxone 2.2
+As we can see from the table, when controlled for gender, age, race, income and years of education, the self-identified democrats still have a statistically significant positive strong relationship(beta = 0.52, P<0.001) while republicants still a statistically significant negative moderate relationshio(beta = -0.35, p<0.001) with attitudes of supporting naloxone distribution to prevent opioid overdose. In other words, self-identified democrats are still more likely to support naloxone distribution to prevent opioid overdose than republicans, and the tendency of supporting has even increased a little bit from 0.47 to 0.52. 
+```{r question 2.2}
+nalo_demo2 <- lm(num_Naloxone ~ ddem + 
+                      drep +
+                      dmale +
+                      dage30_44 +
+                      dage45_59 +
+                      dage60_plus +
+                      race_BLACK +
+                      race_HISPANIC +
+                      race_ASIAN +
+                      race_OTHERMIXED +
+                      incomedummy_25to49K +
+                      incomedummy_50to84K+
+                      incomedummy_85to150K + 
+                      incomedummy_OVER150K +
+                      dless_HS +
+                      dHS +
+                      dsome_col,
+                      data = v_analysis)
+tbl_regression(nalo_demo2)
+
+```
+
+## Question_naloxone 2.3
+As we can see from the table, if we add opioid stigma and CoBRAS scores to the regression specification, the self-identified democrats still has a statistically significant positive moderate relationship(beta = 0.31, P<0.001) with attitudes of supporting naloxone distribution to prevent opioid overdose, however, the strength is only as half as before. While republicans have no statistically significant relationship with attitudes of supporting naloxone distribution to prevent opioid overdose.
+```{r question 2.3}
+nalo_demo3 <- lm(num_Naloxone ~ ddem + 
+                      drep +
+                      dmale +
+                      dage30_44 +
+                      dage45_59 +
+                      dage60_plus +
+                      race_BLACK +
+                      race_HISPANIC +
+                      race_ASIAN +
+                      race_OTHERMIXED +
+                      incomedummy_25to49K +
+                      incomedummy_50to84K+
+                      incomedummy_85to150K + 
+                      incomedummy_OVER150K +
+                      dless_HS +
+                      dHS +
+                      dsome_col +
+                      Stigma_Scale_Score +
+                      CoBRAS_Scale, 
+                      data = v_analysis)
+tbl_regression(nalo_demo3)
+
+```
+## Question_naloxone 2.3.1
+As we can see from the table, both the CoBRAS subscale(implicit racism)(beta = -0.25, p > 0.001) and stigmatizing attitudes and beliefs regarding opioid use disorder(beta = -0.24, p > 0.001) have a moderate negative association with supporting naloxone distribution to prevent opioid overdose,. In other words, people with more implicit racism and stigmatiazing attitudes are less likely to support naloxone distribution to prevent opiod overdose. 
+
+## Question_mandatory 3.1
+As we can see from the table, the self-identified democrats has a statistically significant weak positive relationship(beta = 0.29, P<0.001) with attitudes believing mandatory treatment effective. In other words, self-identified democrats are more likely to believe mandatory treatment to be effective. While republicans have no statistical signficant relationship with attitudes believing mandatory treatment to be effective. 
+```{r question 3.1}
+man_demo1 <- lm(num_Mandatory ~ ddem +
+                    drep, 
+                    data = v_analysis)
+
+tbl_regression(man_demo1)
+
+```
+
+## Question_Mandatory 3.2
+As we can see from the table, when controlled for gender, age, race, income and years of education, the self-identified democrats still has a statistically significant weak positive relationship(beta = 0.29, P<0.001) with attitudes of believing mandatory treatment be effective. While republicans have no statistically significant relationship with attitudes of believing mandatory treatment to be effective. In other words, self-identified democrats are still likely to believe mandatory treatment to be more effective. 
+```{r question 3.2}
+man_demo2 <- lm(num_Mandatory ~ ddem + 
+                      drep +
+                      dmale +
+                      dage30_44 +
+                      dage45_59 +
+                      dage60_plus +
+                      race_BLACK +
+                      race_HISPANIC +
+                      race_ASIAN +
+                      race_OTHERMIXED +
+                      incomedummy_25to49K +
+                      incomedummy_50to84K+
+                      incomedummy_85to150K + 
+                      incomedummy_OVER150K +
+                      dless_HS +
+                      dHS +
+                      dsome_col,
+                      data = v_analysis)
+tbl_regression(man_demo2)
+
+```
+
+## Question_Mandatory 3.3
+As we can see from the table, if we add opioid stigma and CoBRAS scores to the regression specification, the self-identified democrats still has a statistically significant weak positive relationship(beta = 0.22, P<0.01) with attitudes of believing mandatory treatment be effective, however, the strength of the relationship has been reduced from 0.29 to 0.22. While for republicans, they have no statistically significant relationship with attitudes of believing mandatory treatment be effective.
+```{r question 3.3}
+man_demo3 <- lm(num_Mandatory ~ ddem + 
+                      drep +
+                      dmale +
+                      dage30_44 +
+                      dage45_59 +
+                      dage60_plus +
+                      race_BLACK +
+                      race_HISPANIC +
+                      race_ASIAN +
+                      race_OTHERMIXED +
+                      incomedummy_25to49K +
+                      incomedummy_50to84K+
+                      incomedummy_85to150K + 
+                      incomedummy_OVER150K +
+                      dless_HS +
+                      dHS +
+                      dsome_col +
+                      Stigma_Scale_Score +
+                      CoBRAS_Scale, 
+                      data = v_analysis)
+tbl_regression(man_demo3)
+```
+## Question_Mandatory 3.3.1
+As we can see from the table, both the CoBRAS subscale(implicit racism) and stigmatizing attitudes and beliefs regarding opioid use disorder have no association with attitudes of believing mandatory treatment be effective. In other words, people with more implicit racism and stigmatiazing attitudes and those who are not make no difference regarding their attitudes of believing madatory treatment be effective or not.
