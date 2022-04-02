@@ -4,10 +4,9 @@ author: "Junyou"
 date: 2/4/2022
 output:
   github_document: 
-   toc: 5
+   toc: true
+   toc_depth: 5
 ---
-
-Template regression program--Yeah we don't need all these libraries.
 
 ```{r setup, include=TRUE, echo=TRUE}
 #library(foreign)
