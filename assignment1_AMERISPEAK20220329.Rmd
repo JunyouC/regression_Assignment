@@ -115,7 +115,7 @@ Medicaid_demo2 <- lm(num_Medicaid ~ ddem +
                       dHS +
                       dsome_col,
                       data = v_analysis)
-tbl_regression(Medicaid_demo2)
+tbl_regression(Medicaid_demo2, exponentiate=FALSE)
 ## omitted age category why omitted?
 ## How to set dummy variables?
 
@@ -146,7 +146,7 @@ Medicaid_demo3 <- lm(num_Medicaid ~ ddem +
                       Stigma_Scale_Score +
                       CoBRAS_Scale, 
                       data = v_analysis)
-tbl_regression(Medicaid_demo3)
+tbl_regression(Medicaid_demo3, exponentiate=FALSE)
 ```
 ## Question_Democrats 1.3.1
 As we can see from the table, both the CoBRAS subscale(implicit racism)(beta = -0.34, p < 0.001) and stigmatizing attitudes and beliefs regarding opioid use disorder(beta = -0.36, p<0.001) have a moderate negative association with attitudes of supporting expanded Medicaid benefits for addiction coverage. In other words, people with more implicit racism and stigmatiazing attitudes are less likely to support expanded Medicaid benefits for addiction coverage. 
@@ -183,7 +183,7 @@ nalo_demo2 <- lm(num_Naloxone ~ ddem +
                       dHS +
                       dsome_col,
                       data = v_analysis)
-tbl_regression(nalo_demo2)
+tbl_regression(nalo_demo2, exponentiate=FALSE)
 
 ```
 
@@ -210,7 +210,7 @@ nalo_demo3 <- lm(num_Naloxone ~ ddem +
                       Stigma_Scale_Score +
                       CoBRAS_Scale, 
                       data = v_analysis)
-tbl_regression(nalo_demo3)
+tbl_regression(nalo_demo3, exponentiate=FALSE)
 
 ```
 ## Question_naloxone 2.3.1
@@ -223,7 +223,7 @@ man_demo1 <- lm(num_Mandatory ~ ddem +
                     drep, 
                     data = v_analysis)
 
-tbl_regression(man_demo1)
+tbl_regression(man_demo1, exponentiate=FALSE)
 
 ```
 
@@ -248,7 +248,7 @@ man_demo2 <- lm(num_Mandatory ~ ddem +
                       dHS +
                       dsome_col,
                       data = v_analysis)
-tbl_regression(man_demo2)
+tbl_regression(man_demo2, exponentiate=FALSE)
 
 ```
 
@@ -275,7 +275,7 @@ man_demo3 <- lm(num_Mandatory ~ ddem +
                       Stigma_Scale_Score +
                       CoBRAS_Scale, 
                       data = v_analysis)
-tbl_regression(man_demo3)
+tbl_regression(man_demo3, exponentiate=FALSE)
 ```
 ## Question_Mandatory 3.3.1
 As we can see from the table, both the CoBRAS subscale(implicit racism) and stigmatizing attitudes and beliefs regarding opioid use disorder have no association with attitudes of believing mandatory treatment be effective. In other words, people with more implicit racism and stigmatiazing attitudes and those who are not make no difference regarding their attitudes of believing madatory treatment be effective or not.
