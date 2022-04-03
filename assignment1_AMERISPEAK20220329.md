@@ -3,6 +3,7 @@ assignment1_SSAD1_template.Rmd
 Junyou
 2/4/2022
 
+-   [Read the csv file](#read-the-csv-file)
 -   [Question_Democrats 1.1](#question_democrats-11)
 -   [Question_Democrats 1.2](#question_democrats-12)
 -   [Question_Democrats 1.3](#question_democrats-13)
@@ -15,6 +16,7 @@ Junyou
 -   [Question_Mandatory 3.2](#question_mandatory-32)
 -   [Question_Mandatory 3.3](#question_mandatory-33)
 -   [Question_Mandatory 3.3.1](#question_mandatory-331)
+-   [Insight](#insight)
 
 ``` r
 #library(foreign)
@@ -47,10 +49,10 @@ library(tidyverse)
 library(knitr)
 options(width = 150)
 options(qwraps2_markup = "markdown")
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
-Read the csv file
+## Read the csv file
 
 ``` r
 ## read file
@@ -273,6 +275,10 @@ tbl_regression(Medicaid_full,exponentiate=FALSE)
 
 ## Question_Democrats 1.1
 
+*How do self-identified democrats dufferebt from self-identified
+republicans in their support for expanded Medicaid benefits for addction
+coverage?*  
+
 As we can see from the table, the self-identified democrats has a
 statistically significant positive strong relationship(beta = 0.62,
 P\<0.001), while the republicans having a statistically significant
@@ -318,6 +324,9 @@ tbl_regression(Medicaid_demo)
 
 ## Question_Democrats 1.2
 
+*How does answer change when you control for gender, age, race, income,
+and years of education?*  
+  
 As we can see from the table, when controlled for gender, age, race,
 income and years of education, the self-identified democrats still have
 a statistically significant positive strong relationship(beta = 0.66,
@@ -447,6 +456,11 @@ tbl_regression(Medicaid_demo2, exponentiate=FALSE)
 
 ## Question_Democrats 1.3
 
+*What happens to these partisan differences and other coefficients when
+you add opioid stigma and CoBRAS scores to your regression
+specification? Do stigmatizing attitudes and CoBRAS race-conservativism
+scores matter in predicting these outcomes?*  
+  
 As we can see from the table, if we add opioid stigma and CoBRAS scores
 to the regression specification, the self-identified democrats still has
 a statistically significant positive moderate relationship(beta = 0.36,
@@ -579,6 +593,9 @@ tbl_regression(Medicaid_demo3, exponentiate=FALSE)
 
 ## Question_Democrats 1.3.1
 
+*Interpret the size of these last 2 coefficients. Are they large or
+small exstimated relationships.*  
+  
 As we can see from the table, both the CoBRAS subscale(implicit
 racism)(beta = -0.34, p \< 0.001) and stigmatizing attitudes and beliefs
 regarding opioid use disorder(beta = -0.36, p\<0.001) have a moderate
@@ -589,6 +606,9 @@ expanded Medicaid benefits for addiction coverage.
 
 ## Question_naloxone 2.1
 
+*Repeat1-3 with the dependent variable being support for naloxone
+distribution for overdose prevention.*  
+  
 As we can see from the table, the self-identified democrats has a
 statistically significant positive strong relationship(beta = 0.47,
 P\<0.001), while republicans have a statistically significant negative
@@ -901,6 +921,9 @@ to prevent opiod overdose.
 
 ## Question_mandatory 3.1
 
+*Repeat 1-3 with the dependent variable being support for mandatory
+treatment.*  
+  
 As we can see from the table, the self-identified democrats has a
 statistically significant weak positive relationship(beta = 0.29,
 P\<0.001) with attitudes believing mandatory treatment effective. In
@@ -1209,3 +1232,16 @@ effective. In other words, people with more implicit racism and
 stigmatiazing attitudes and those who are not make no difference
 regarding their attitudes of believing madatory treatment be effective
 or not.
+
+## Insight
+
+*Draw at least one political or public health policy insight from
+analysis.*  
+  
+In general speaking, democrates are more pro for supporting naloxone
+distribution to prevent opioid overdose and supporting expanded Medicaid
+benefits for addiction coverage while republicans not. This helped to
+explain why Obama, as a democrate, put so many efforts in promoting
+affordable care act trying to make health insurance affordable for
+everyone while Trump, as an republican, asked Supreme Court to strike
+down affordable care act.

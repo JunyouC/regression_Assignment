@@ -8,7 +8,7 @@ output:
    toc_depth: 5
 ---
 
-```{r setup, include=TRUE, echo=TRUE}
+```{r setup, echo=TRUE}
 #library(foreign)
 #library(systemfit)
 #library(stargazer)
@@ -25,11 +25,11 @@ library(tidyverse)
 library(knitr)
 options(width = 150)
 options(qwraps2_markup = "markdown")
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
 
-Read the csv file
+## Read the csv file
 
 ```{R read Amerispeak file and convert, echo=TRUE, warning=FALSE}
 ## read file
@@ -84,6 +84,8 @@ tbl_regression(Medicaid_full,exponentiate=FALSE)
 ```
 
 ## Question_Democrats 1.1
+*How do self-identified democrats dufferebt from self-identified republicans in their support for expanded Medicaid benefits for addction coverage?*\
+
 As we can see from the table, the self-identified democrats has a statistically significant positive strong relationship(beta = 0.62, P<0.001), while the republicans having a statistically significant positive moderate relationship(beta = -0.59, P<0.001) with attitudes of supporting expanded Medicaid benefits for addiction coverage.
 In other words, self-identified democrats are more likely to support expanded Medicaid benefits for addiction coverage while republicans not. 
 
@@ -95,6 +97,9 @@ tbl_regression(Medicaid_demo)
 
 ```
 ## Question_Democrats 1.2
+*How does answer change when you control for gender, age, race, income, and years of education?*
+\
+\
 As we can see from the table, when controlled for gender, age, race, income and years of education, the self-identified democrats still have a statistically significant positive strong relationship(beta = 0.66, P<0.001), while republicans still have a statistically significant negative moderate relationship(beta = -0.56, p<0.001) with attitudes of supporting expanded Medicaid benefits for addiction coverage. In other words, self-identified democrats are still more likely to support expanded Medicaid benefits for addiction coverage, and the tendency of supporting has even increased a little bit from0.62 to 0.66 while republicans not. 
 ```{r question 1.2}
 Medicaid_demo2 <- lm(num_Medicaid ~ ddem + 
@@ -123,6 +128,9 @@ tbl_regression(Medicaid_demo2, exponentiate=FALSE)
 
 
 ## Question_Democrats 1.3
+*What happens to these partisan differences and other coefficients when you add opioid stigma and CoBRAS scores to your regression specification? Do stigmatizing attitudes and CoBRAS race-conservativism scores matter in predicting these outcomes?*
+\
+\
 As we can see from the table, if we add opioid stigma and CoBRAS scores to the regression specification, the self-identified democrats still has a statistically significant positive moderate relationship(beta = 0.36, P<0.001) with attitudes of supporting expanded Medicaid benefits for addiction coverage,however, the strength is only as half as before. For the republicans, they have a significant negative weak relationship(beta = -0.27, p = 0.01) with attitudes of supporting expanded Medicaid benefits for addiction coverage.
 
 ```{r question 1.3}
@@ -149,10 +157,16 @@ Medicaid_demo3 <- lm(num_Medicaid ~ ddem +
 tbl_regression(Medicaid_demo3, exponentiate=FALSE)
 ```
 ## Question_Democrats 1.3.1
+*Interpret the size of these last 2 coefficients. Are they large or small exstimated relationships.*
+\
+\
 As we can see from the table, both the CoBRAS subscale(implicit racism)(beta = -0.34, p < 0.001) and stigmatizing attitudes and beliefs regarding opioid use disorder(beta = -0.36, p<0.001) have a moderate negative association with attitudes of supporting expanded Medicaid benefits for addiction coverage. In other words, people with more implicit racism and stigmatiazing attitudes are less likely to support expanded Medicaid benefits for addiction coverage. 
 
 
 ## Question_naloxone 2.1
+*Repeat1-3 with the dependent variable being support for naloxone distribution for overdose prevention.*
+\
+\
 As we can see from the table, the self-identified democrats has a statistically significant positive strong relationship(beta = 0.47, P<0.001), while republicans have a statistically significant negative moderate relationship(beta = -0.32, p<0.001) with attitudes of supporting naloxone distribution to prevent opioid overdose. In other words, self-identified democrats are more likely to support naloxone distribution to prevent opioid overdose while republicans not. 
 ```{r question 2.1}
 nalo_demo1 <- lm(num_Naloxone ~ ddem +
@@ -217,6 +231,9 @@ tbl_regression(nalo_demo3, exponentiate=FALSE)
 As we can see from the table, both the CoBRAS subscale(implicit racism)(beta = -0.25, p > 0.001) and stigmatizing attitudes and beliefs regarding opioid use disorder(beta = -0.24, p > 0.001) have a moderate negative association with supporting naloxone distribution to prevent opioid overdose,. In other words, people with more implicit racism and stigmatiazing attitudes are less likely to support naloxone distribution to prevent opiod overdose. 
 
 ## Question_mandatory 3.1
+*Repeat 1-3 with the dependent variable being support for mandatory treatment.*
+\
+\
 As we can see from the table, the self-identified democrats has a statistically significant weak positive relationship(beta = 0.29, P<0.001) with attitudes believing mandatory treatment effective. In other words, self-identified democrats are more likely to believe mandatory treatment to be effective. While republicans have no statistical signficant relationship with attitudes believing mandatory treatment to be effective. 
 ```{r question 3.1}
 man_demo1 <- lm(num_Mandatory ~ ddem +
@@ -279,3 +296,9 @@ tbl_regression(man_demo3, exponentiate=FALSE)
 ```
 ## Question_Mandatory 3.3.1
 As we can see from the table, both the CoBRAS subscale(implicit racism) and stigmatizing attitudes and beliefs regarding opioid use disorder have no association with attitudes of believing mandatory treatment be effective. In other words, people with more implicit racism and stigmatiazing attitudes and those who are not make no difference regarding their attitudes of believing madatory treatment be effective or not.
+
+## Insight
+*Draw at least one political or public health policy insight from analysis.*
+\
+\
+In general speaking, democrates are more pro for supporting naloxone distribution to prevent opioid overdose and supporting expanded Medicaid benefits for addiction coverage while republicans not. This helped to explain why Obama, as a democrate, put so many efforts in promoting affordable care act trying to make health insurance affordable for everyone while Trump, as an republican, asked Supreme Court to strike down affordable care act. 
